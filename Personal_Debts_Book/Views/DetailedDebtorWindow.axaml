@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" Width="445" Height="280" CanResize="True"
         x:Class="Personal_Debts_Book.Views.DetailedDebtorWindow"
-        Title="Detailed Information of Debtor">
-	
+        Title="Detailed Information of Debtor"
+		Icon="/Assets/Demon_Angel.ico">
+
 	<Design.DataContext>
 		<vm:DetailedDebtorWindowViewModel/>
 	</Design.DataContext>
-	
+
 	<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
 		<Grid>
 			<Label Content="{Binding FullName}" FontSize="16" Width="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0" />

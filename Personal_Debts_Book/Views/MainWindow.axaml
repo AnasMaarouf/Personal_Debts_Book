@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" Width="715" Height="240" CanResize="True"
         x:Class="Personal_Debts_Book.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/Demon_Angel.ico"
         Title="Personal Debt Book">
 
 	<Design.DataContext>
