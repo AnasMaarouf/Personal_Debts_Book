@@ -1,0 +1,50 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Personal_Debts_Book.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Width="715" Height="240" CanResize="True"
+        x:Class="Personal_Debts_Book.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Personal Debt Book">
+
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+	
+	<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+		<Grid>
+			<DataGrid x:Name="Debtors_Datagrid" Items="{Binding Debtors}" AutoGenerateColumns="False" VerticalAlignment="Top" HorizontalAlignment="Left" Width="418" Height="230" Margin="5,5,0,0" GridLinesVisibility="All"
+				CanUserReorderColumns="True" CanUserResizeColumns="True" SelectedItem="{Binding SelectedDebtor}" SelectedIndex="{Binding SelectedDebtorIndex}">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header = "First Name" Binding="{Binding FirstName}" FontSize="12" MinWidth="140" MaxWidth="140"/>
+					<DataGridTextColumn Header = "Last Name" Binding="{Binding LastName}" FontSize="12" MinWidth="140" MaxWidth="140"/>
+					<DataGridTextColumn Header = "Total Amount" Binding="{Binding TotalDebt}" FontSize="12" MinWidth="108" MaxWidth="108" IsReadOnly="True"/>
+				</DataGrid.Columns>
+			</DataGrid>
+
+			<Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="430,5,0,0" BorderThickness="1" BorderBrush="Black" CornerRadius="2" Width="280" Height="112">
+				<Grid>
+					<Button Content = "Add new debtor" FontSize="12" Width="274" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2, 2" Command="{Binding AddNewDebtorCommand}"/>
+					<TextBox Text="{Binding FirstName}" FontSize="12" Width="150" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2, 39"/>
+					<TextBox Text = "{Binding LastName}" FontSize="12" Width="150" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2, 76"/>
+					<Button Content = "Update Debtor" FontSize="12" Width="120" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="156, 39" Command="{Binding UpdateDebtorCommand}"/>
+					<Button Content = "Delete debtor" Background="Red" FontSize="12" Width="120" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="156, 76" Command="{Binding DeleteDebtorCommand}"/>
+				</Grid>
+			</Border>
+				
+			<Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="430,125,0,0" BorderThickness="1" BorderBrush="Black" CornerRadius="2"  Width="280" Height="111">
+				<Grid>
+					<Button Content = "Open debtor information" FontSize="12" Width="274" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2, 2" Command="{Binding OpenWindow_DetailedDescriptionOfDebtorCommand}"/>
+					<TextBox Text = "{Binding FolderLocation}" FontSize="12" Width="274" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2, 38"/>
+					<Button Content = "Load from file" FontSize="12" Width="135" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2, 75" Command="{Binding LoadDataCommand}"/>
+					<Button Content = "Save/Update file" FontSize="12" Width="135" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="141, 75" Command="{Binding SaveOrUpdateDataCommand}"/>
+				</Grid>
+			</Border>
+			
+			
+			
+		</Grid>
+	</ScrollViewer>
+
+</Window>

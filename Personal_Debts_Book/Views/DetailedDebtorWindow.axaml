@@ -1,0 +1,60 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Personal_Debts_Book.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Width="445" Height="280" CanResize="True"
+        x:Class="Personal_Debts_Book.Views.DetailedDebtorWindow"
+        Title="Detailed Information of Debtor">
+	
+	<Design.DataContext>
+		<vm:DetailedDebtorWindowViewModel/>
+	</Design.DataContext>
+	
+	<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+		<Grid>
+			<Label Content="{Binding FullName}" FontSize="16" Width="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0" />
+			<Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,30,0,0" BorderThickness="1" BorderBrush="Black" CornerRadius="2"  Width="410" Height="230">
+				<Grid>
+					<DataGrid x:Name="Debts_Datagrid" Items="{Binding Debts}" AutoGenerateColumns="False" VerticalAlignment="Top" HorizontalAlignment="Left" Width="210" Height="223" Margin="2,2,0,0" GridLinesVisibility="All"
+									CanUserReorderColumns="True" CanUserResizeColumns="True" SelectedItem="{Binding SelectedDebt}" SelectedIndex="{Binding SelectedDebtIndex}" IsReadOnly="True">
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Date" Binding="{Binding Date}" FontSize="12" MinWidth="90" MaxWidth="90"/>
+							<DataGridTextColumn Header="Amount" Binding="{Binding Amount}" FontSize="12" MinWidth="100" MaxWidth="100"/>
+						</DataGrid.Columns>
+					</DataGrid>
+
+					<Calendar SelectedDate="{Binding Date}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="218,0,0,0"/>
+					<TextBox Text="{Binding Amount}" FontSize="12" Width="188" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="218, 159"/>
+
+					<Button Content="Add" FontSize="12" Width="92" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="218, 195" Command="{Binding AddNewDebt}"/>
+					<Button Content="Delete Debt" Background="Red" FontSize="12" Width="92" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="314, 195" Command="{Binding DeleteDebt}"/>
+				</Grid>
+			</Border>
+
+			<Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="250,270,0,0" BorderThickness="1" BorderBrush="Black" CornerRadius="2" Width="170" Height="262">
+				<Grid>
+					<Label Content="PhoneNumbers:" FontSize="14" Width="142" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,2" />
+					<ListBox Items="{Binding PhoneNumbers}" SelectedItem="{Binding SelectedPhoneNumber}" VerticalAlignment="Top" HorizontalAlignment="Left"
+							 Width="164" Height="135" Margin="2,27,0,0" FontSize="10"/>
+
+					<TextBox Text="{Binding PhoneNumber}" FontSize="12" Width="164" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2, 165"/>
+					<Button Content="Add Phone Number" FontSize="12" Width="164" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2, 200" Command="{Binding AddPhoneNumber}"/>
+					<Button Content="Delete Phone Number" Background="Red" FontSize="12" Width="164" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2, 233" Command="{Binding DeletePhoneNumber}"/>
+				</Grid>
+			</Border>
+
+			<Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,270,0,0" BorderThickness="1" BorderBrush="Black" CornerRadius="2" Width="233" Height="262">
+				<Grid>
+					<Label Content="Emails:" FontSize="14" Width="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,2"/>
+					<ListBox Items="{Binding Emails}" SelectedItem="{Binding SelectedEmail}" VerticalAlignment="Top" HorizontalAlignment="Left"
+							 Width="227" Height="135" Margin="2,27,0,0" FontSize="10"/>
+
+					<TextBox Text="{Binding Email}" FontSize="12" Width="227" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2, 165"/>
+					<Button Content="Add Email" FontSize="12" Width="227" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2, 200" Command="{Binding AddEmail}"/>
+					<Button Content="Delete Email" Background="Red" FontSize="12" Width="227" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2, 233" Command="{Binding DeleteEmail}"/>
+				</Grid>
+			</Border>
+		</Grid>
+	</ScrollViewer>
+</Window>
