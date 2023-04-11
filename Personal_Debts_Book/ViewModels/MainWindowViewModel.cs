@@ -1,19 +1,11 @@
-﻿using System.Reactive.Linq;
-using Personal_Debts_Book;
-using ReactiveUI;
+﻿using ReactiveUI;
 using System.Collections.ObjectModel;
-using Avalonia.ReactiveUI;
-using System.Windows.Input;
 using System.Text.Json;
-using System.Collections.Specialized;
 using Personal_Debts_Book.Models;
 using Personal_Debts_Book.Views;
-using Personal_Debts_Book.Utililty;
 using System.IO;
 using System.Collections.Generic;
-using Avalonia.Media;
-using System.Text.RegularExpressions;
-using System.Linq;
+using Avalonia;
 
 namespace Personal_Debts_Book.ViewModels
 {
@@ -28,7 +20,7 @@ namespace Personal_Debts_Book.ViewModels
             Debtors.Add(tmp2);
         }
 
-        
+
         #region Variables
         private ObservableCollection<Debtor> _debtors = new ObservableCollection<Debtor>();
         public ObservableCollection<Debtor> Debtors {
@@ -52,18 +44,18 @@ namespace Personal_Debts_Book.ViewModels
         }
 
 
-        private string _debtorsListFolderLocation = "";
-        public string DebtorsListFolderLocation
-        {
-            get { return _debtorsListFolderLocation; }
-            set { this.RaiseAndSetIfChanged(ref _debtorsListFolderLocation, value); }
-        }
+        //private string _debtorsListFolderLocation = ""; //Use if folder contains other information such as pictures, configuration files and etc.
+        //public string DebtorsListFolderLocation     //Use if folder contains other information such as pictures, configuration files and etc.
+        //{
+        //    get { return _debtorsListFolderLocation; }
+        //    set { this.RaiseAndSetIfChanged(ref _debtorsListFolderLocation, value); }
+        //}
 
         private string _folderLocation = "Folder Location";
         public string FolderLocation
         {
             get { return _folderLocation; }
-            set { this.RaiseAndSetIfChanged(ref _folderLocation, value); }
+            set {this.RaiseAndSetIfChanged(ref _folderLocation, value);}
         }
 
         private string _firstName = "First Name";
@@ -80,38 +72,46 @@ namespace Personal_Debts_Book.ViewModels
             set { this.RaiseAndSetIfChanged(ref _lastName, value); }
         }
 
-        private string _date = "";
-        public string Date
+
+        private bool _saveLoadSingleFile_RadioButton = true;
+        public bool SaveLoadSingleFile_RadioButton
         {
-            get { return _date; }
-            set { this.RaiseAndSetIfChanged(ref _date, value); }
+            get { return _saveLoadSingleFile_RadioButton; }
+            set { this.RaiseAndSetIfChanged(ref _saveLoadSingleFile_RadioButton, value); }
         }
 
-        private string _amount = "1,00";
-        public string Amount
+        private bool _saveLoadMultipleFiles_RadioButton = false;
+        public bool SaveLoadMultipleFiles_RadioButton
         {
-            get { return _amount; }
-            set { this.RaiseAndSetIfChanged(ref _amount, value); }
+            get { return _saveLoadMultipleFiles_RadioButton; }
+            set { this.RaiseAndSetIfChanged(ref _saveLoadMultipleFiles_RadioButton, value); }
         }
-
 
         #endregion
 
 
         #region Methods
         #region PrivateMethods
-        private Debtor? ConvertFrom_JSON_To_CSharp(string FileName)
+        private Debtor? ConvertFrom_JSONToCSharp_Multifile(string FileName)
         {
             if (System.IO.File.Exists(FileName))
             {
+                Debtor? debtor;
                 string File = System.IO.File.ReadAllText(FileName);
-                Debtor? debtor = JsonSerializer.Deserialize<Debtor>(File);
+                try
+                {
+                    debtor = JsonSerializer.Deserialize<Debtor>(File);
+                }
+                catch
+                {
+                    return null;
+                }
                 return debtor;
             }
             return null;
         }
 
-        private bool ConvertFrom_CSharp_To_JSON(string FileName, Debtor debtors)
+        private bool ConvertFrom_CSharpToJSON_Multifile(string FileName, Debtor debtors)
         {
             Debtor tmpObservableCollection = debtors;
             string JSON_formatted_text = "";
@@ -126,16 +126,99 @@ namespace Personal_Debts_Book.ViewModels
 
             if (!System.IO.File.Exists(FileName))
             {
-                System.IO.File.WriteAllText(FileName, JSON_formatted_text);
+                try
+                {
+                    System.IO.File.WriteAllText(FileName, JSON_formatted_text);
+                }
+                catch
+                {
+                    return false;
+                }
             }
             else
             {
-                System.IO.File.Delete(FileName);
-                System.IO.File.WriteAllText(FileName, JSON_formatted_text);
+                try
+                {
+                    System.IO.File.Delete(FileName);
+                }
+                catch
+                {
+                    return false;
+                }
+
+                try
+                {
+                    System.IO.File.WriteAllText(FileName, JSON_formatted_text);
+                }
+                catch
+                {
+                    return false;
+                }
             }
             return true;
         }
 
+
+        private ObservableCollection<Debtor>? ConvertFrom_JSONToCSharp_Singlefile(string FileName)
+        {
+            if (System.IO.File.Exists(FileName))
+            {
+                string File = System.IO.File.ReadAllText(FileName);
+                ObservableCollection<Debtor>? debtor;
+                try
+                {
+                    debtor = JsonSerializer.Deserialize<ObservableCollection<Debtor>>(File);
+                } catch { return null; }
+                return debtor;
+            }
+            return null;
+        }
+
+        private bool ConvertFrom_CSharpToJSON_Singlefile(string FileName, ObservableCollection<Debtor> debtors)
+        {
+            ObservableCollection<Debtor> tmpObservableCollection = debtors;
+            string JSON_formatted_text = "";
+
+            try
+            {
+                JSON_formatted_text = JsonSerializer.Serialize(tmpObservableCollection);
+            }
+            catch
+            {
+                return false;
+            }
+
+            
+            if (!System.IO.File.Exists(FileName))
+            {
+                try
+                {
+                    System.IO.File.WriteAllText(FileName, JSON_formatted_text);
+                } catch
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                try
+                {
+                    System.IO.File.Delete(FileName);
+                } catch {
+                    return false;
+                }
+
+                try
+                {
+                    System.IO.File.WriteAllText(FileName, JSON_formatted_text);
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         #endregion
         #region PublicMethods
 
@@ -154,8 +237,10 @@ namespace Personal_Debts_Book.ViewModels
                     DataContext = registerDebtsWindowViewModel
                 };
                 registerDebtsWindow.Show();
+
             }
         }
+
 
         private void AddNewDebtorCommand()
         {
@@ -178,51 +263,62 @@ namespace Personal_Debts_Book.ViewModels
             }
         }
 
-        private void UpdateDebtorCommand()
-        {
-            if (SelectedDebtor != null)
-            {
-                SelectedDebtor.FirstName = FirstName;
-                SelectedDebtor.LastName = LastName;
-                
-                if (SelectedDebtor != null)
-                    SelectedDebtor = Debtors[0];
-                else
-                    SelectedDebtor = null;
-            } else
-            {
-                FirstName = "ERROR: Debtor not selected!";
-                LastName = "ERROR: Debtor not selected!";
-            }
-
-        }
-
 
         private void SaveOrUpdateDataCommand()
         {
-            if (!Directory.Exists(FolderLocation))
-            {
-                try
-                {
-                    Directory.CreateDirectory(FolderLocation);
-                }
-                catch {
-                    FolderLocation = "ERROR: Folder could not be created";
-                    return;
-                }
-            }
+            
             if (Debtors != null) {
-                foreach (Debtor _debtor in Debtors)
-                {
-                    if (!ConvertFrom_CSharp_To_JSON(FolderLocation + "/" + "Debtor - " + _debtor.FullName, _debtor))
+                if (SaveLoadMultipleFiles_RadioButton) {
+                    if (!Directory.Exists(FolderLocation))
                     {
-                        FolderLocation = "ERROR: Could not save " + _debtor.FullName + "to a file!";
+                        try
+                        {
+                            Directory.CreateDirectory(FolderLocation);
+                        }
+                        catch
+                        {
+                            FolderLocation = "ERROR: Folder could not be created";
+                            return;
+                        }
+                    }
+                    foreach (Debtor _debtor in Debtors)
+                    {
+                        if (!ConvertFrom_CSharpToJSON_Multifile(FolderLocation + "/" + "Debtor - " + _debtor.FullName, _debtor))
+                        {
+                            FolderLocation = "ERROR: Could not save " + _debtor.FullName + "to a file!";
+                            return;
+                        }
+                    }
+                } else if (SaveLoadSingleFile_RadioButton)
+                {
+                    if (FolderLocation.Contains("/"))
+                    {
+                        int index = FolderLocation.LastIndexOf('/');
+                        string dir = FolderLocation.Substring(0, index + 1);
+                        if (!Directory.Exists(dir))
+                        {
+                            try
+                            {
+                                Directory.CreateDirectory(dir);
+                            } catch
+                            {
+                                FolderLocation = "ERROR: Could not create directory \"" + dir + "\"!";
+                            }
+                        }
+                    }
+
+                    if (!ConvertFrom_CSharpToJSON_Singlefile(FolderLocation, Debtors))
+                    {
+                        FolderLocation = "ERROR: Could not save list to a file!";
                         return;
                     }
                 }
+            } else
+            {
+                FolderLocation = "ERROR: No debtors!";
             }
 
-            DebtorsListFolderLocation = FolderLocation + "/";
+            //DebtorsListFolderLocation = FolderLocation + "/";     //Use if folder contains other information such as pictures, configuration files and etc.
         }
 
         private void LoadDataCommand()
@@ -233,29 +329,45 @@ namespace Personal_Debts_Book.ViewModels
                 IEnumerable<string> Files = Directory.EnumerateFiles(FolderLocation);
                 string refString = "Debtor - ";
 
-                foreach (string file in Files)
+                if (SaveLoadMultipleFiles_RadioButton)
                 {
-                    Debtor? tmpDebtor = null;
-                    if(file.Contains(refString))
+                    foreach (string file in Files)
                     {
-                        tmpDebtor = ConvertFrom_JSON_To_CSharp(file);
-                        if (tmpDebtor == null)
+                        Debtor? tmpDebtor = null;
+                        if (file.Contains(refString))
                         {
-                            FolderLocation = "ERROR: " + file + " is not valid!";
-                            return;
-                        }
-                        tmpDebtorList.Add(tmpDebtor);
+                            tmpDebtor = ConvertFrom_JSONToCSharp_Multifile(file);
+                            if (tmpDebtor == null)
+                            {
+                                FolderLocation = FolderLocation + ", \"" + file + "\" is Invalid Invalid input!";
+                                return;
+                            }
+                            tmpDebtorList.Add(tmpDebtor);
 
+                        }
+                    }
+                }
+                else if (SaveLoadSingleFile_RadioButton)
+                {
+                    tmpDebtorList = ConvertFrom_JSONToCSharp_Singlefile(FolderLocation);
+                    if (tmpDebtorList == null)
+                    {
+                        FolderLocation = "ERROR: Invalid input!";
+                        return;
                     }
                 }
 
-                Debtors.Clear();
-                DebtorsListFolderLocation = FolderLocation + "/";
-
-                for (int i = 0; i < tmpDebtorList.Count; i++)
+                 Debtors.Clear();
+                //DebtorsListFolderLocation = FolderLocation + "/";     //Use if folder contains other information such as pictures, configuration files and etc.
+                if (tmpDebtorList != null) {
+                    for (int i = 0; i < tmpDebtorList.Count; i++)
+                    {
+                        Debtors.Add(tmpDebtorList[i]);
+                        Debtors[i].attachDebtsListEvent();
+                    }
+                } else
                 {
-                    Debtors.Add(tmpDebtorList[i]);
-                    Debtors[i].attachDebtsListEvent();
+                    FolderLocation = "ERROR: Folder contains no debtors!";
                 }
             }
             else

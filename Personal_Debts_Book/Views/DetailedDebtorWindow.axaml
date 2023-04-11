@@ -6,7 +6,7 @@
         mc:Ignorable="d" Width="445" Height="280" CanResize="True"
         x:Class="Personal_Debts_Book.Views.DetailedDebtorWindow"
         Title="Detailed Information of Debtor"
-		Icon="/Assets/Demon_Angel.ico">
+		Icon="/Assets/MoneyBag_DollarSign.ico">
 
 	<Design.DataContext>
 		<vm:DetailedDebtorWindowViewModel/>
@@ -33,7 +33,7 @@
 				</Grid>
 			</Border>
 
-			<Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="250,270,0,0" BorderThickness="1" BorderBrush="Black" CornerRadius="2" Width="170" Height="262">
+			<Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="250,265,0,0" BorderThickness="1" BorderBrush="Black" CornerRadius="2" Width="170" Height="262">
 				<Grid>
 					<Label Content="PhoneNumbers:" FontSize="14" Width="142" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,2" />
 					<ListBox Items="{Binding PhoneNumbers}" SelectedItem="{Binding SelectedPhoneNumber}" VerticalAlignment="Top" HorizontalAlignment="Left"
@@ -45,7 +45,7 @@
 				</Grid>
 			</Border>
 
-			<Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,270,0,0" BorderThickness="1" BorderBrush="Black" CornerRadius="2" Width="233" Height="262">
+			<Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,265,0,0" BorderThickness="1" BorderBrush="Black" CornerRadius="2" Width="233" Height="262">
 				<Grid>
 					<Label Content="Emails:" FontSize="14" Width="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,2"/>
 					<ListBox Items="{Binding Emails}" SelectedItem="{Binding SelectedEmail}" VerticalAlignment="Top" HorizontalAlignment="Left"

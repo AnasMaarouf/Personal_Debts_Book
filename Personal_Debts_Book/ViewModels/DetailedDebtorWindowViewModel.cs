@@ -1,23 +1,9 @@
 ﻿using Personal_Debts_Book.Models;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Microsoft.VisualStudio.PlatformUI;
-using Personal_Debts_Book.Views;
-using System.Collections.Specialized;
-using DynamicData.Binding;
-using System.ComponentModel;
-using Newtonsoft.Json.Linq;
-using Avalonia.Collections;
 using System.Text.RegularExpressions;
-using System.Configuration;
-using Personal_Debts_Book.Utililty;
 
 namespace Personal_Debts_Book.ViewModels
 {
@@ -116,7 +102,7 @@ namespace Personal_Debts_Book.ViewModels
             set { this.RaiseAndSetIfChanged(ref _date, value); }
         }
 
-        private string _amount = "1,00";
+        private string _amount = "299,95";
         public string Amount
         {
             get { return _amount; }
